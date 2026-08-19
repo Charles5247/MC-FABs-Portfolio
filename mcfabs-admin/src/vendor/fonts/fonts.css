@@ -1,0 +1,27 @@
+/* Self-hosted fonts for MC FABS brand — Inter (body/UI) + Playfair Display (display/headings).
+   Variable font files, latin subset. Matches the pattern used in the
+   fabs-masterclass ticketing repo's vendor/fonts/fonts.css. */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./inter-variable-latin.woff2') format('woff2-variations'), url('./inter-variable-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('./playfair-display-variable-latin.woff2') format('woff2-variations'), url('./playfair-display-variable-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('./playfair-display-italic-variable-latin.woff2') format('woff2-variations'), url('./playfair-display-italic-variable-latin.woff2') format('woff2');
+}

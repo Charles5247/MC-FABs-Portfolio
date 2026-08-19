@@ -1,0 +1,26 @@
+/*
+ * MC FABS — Shared Design Tokens
+ * -------------------------------
+ * Single source of truth for brand colors + fonts, shared conceptually
+ * across mcfabs-site and mcfabs-admin. Because these are two separate
+ * Vite projects/repos with no shared build tooling, this file is
+ * duplicated into each project at `src/styles/tokens.css`.
+ *
+ * IMPORTANT: If you change a token here, copy this file into BOTH
+ * `mcfabs-site/src/styles/tokens.css` and `mcfabs-admin/src/styles/tokens.css`
+ * to keep them in sync. See root README.md "Keeping design tokens in sync".
+ */
+
+:root {
+  /* Brand colors */
+  --color-ink: #1D1A39;          /* primary dark background */
+  --color-plum: #451952;         /* secondary dark / section background */
+  --color-marquee-pink: #E4227A; /* accent — CTAs, highlights, links */
+  --color-spark-gold: #F3A25A;   /* secondary accent — dashed borders, labels */
+  --color-paper: #F7F1EC;        /* light section background */
+  --color-blush: #E8BCB9;        /* soft accent text/dividers on dark bg */
+
+  /* Fonts */
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}

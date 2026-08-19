@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" role="img" aria-label="Placeholder cutout portrait of Faith Abah">
+  <rect width="600" height="800" fill="#1D1A39"/>
+  <!-- Flat cutout silhouette: head + shoulders + mic, simple geometric shapes -->
+  <ellipse cx="300" cy="230" rx="95" ry="110" fill="#E8BCB9"/>
+  <path d="M170 780 C170 560 210 470 300 470 C390 470 430 560 430 780 Z" fill="#451952"/>
+  <rect x="150" y="470" width="300" height="40" fill="#451952"/>
+  <!-- mic -->
+  <rect x="285" y="330" width="30" height="90" rx="15" fill="#1D1A39"/>
+  <rect x="292" y="410" width="16" height="70" fill="#1D1A39"/>
+  <circle cx="300" cy="345" r="22" fill="#E4227A"/>
+  <!-- flat accent shapes -->
+  <circle cx="90" cy="120" r="30" fill="#F3A25A"/>
+  <rect x="470" y="620" width="60" height="60" fill="#E4227A"/>
+  <polygon points="520,90 560,150 480,150" fill="#F3A25A"/>
+</svg>

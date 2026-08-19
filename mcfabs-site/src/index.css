@@ -1,0 +1,99 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "./vendor/fonts/fonts.css";
+@import "./styles/tokens.css";
+
+@theme {
+  --color-ink: #1D1A39;
+  --color-plum: #451952;
+  --color-marquee-pink: #E4227A;
+  --color-spark-gold: #F3A25A;
+  --color-paper: #F7F1EC;
+  --color-blush: #E8BCB9;
+
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+
+  /* Visible focus states everywhere — accessibility requirement */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--color-spark-gold);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .sr-only-focusable {
+    position: absolute;
+    left: -9999px;
+  }
+  .sr-only-focusable:focus {
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+  }
+
+  /* Marquee ticker animation */
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee-scroll 30s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
+}

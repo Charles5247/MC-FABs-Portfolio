@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Static base sitemap covering the fixed routes. Blog post URLs are dynamic
+  (stored in Supabase) and are NOT included here automatically — this file
+  is a manual or build-step task. Run `npm run build:sitemap` (see
+  scripts/generate-sitemap.js) after publishing new posts to regenerate this
+  file with every published blog post URL included, then redeploy.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mcfabs.onrender.com/</loc>
+  </url>
+  <url>
+    <loc>https://mcfabs.onrender.com/masterclass</loc>
+  </url>
+  <url>
+    <loc>https://mcfabs.onrender.com/blog</loc>
+  </url>
+</urlset>
