@@ -1,17 +1,30 @@
-import { BRAND, TICKETING_URL, SOCIALS } from '../lib/constants'
+import { BRAND, TICKETING_URL, SOCIALS } from "../lib/constants";
 
 export default function Hero() {
   return (
     <section id="home" className="bg-ink text-paper">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:items-center md:py-24">
-        <div className="order-2 md:order-1">
+      <div className="mx-auto grid max-w-6xl gap-25 px-4 py-16 sm:px-6 md:grid-cols-2 md:items-center md:py-24">
+        <div className="order-1 flex justify-center md:order-1">
+          <img
+            src="\src\fabs.jpg"
+            alt="Faith Abah (Mc Fabs), Master of Ceremonies and Brand Host — cutout portrait"
+            className="h-auto w-full max-w-sm rounded-lg"
+            width="600"
+            height="800"
+          />
+        </div>
+
+        <div className="order-2 md:order-2">
           <p className="eyebrow text-spark-gold">Kano, Nigeria</p>
           <h1 className="mt-3 font-display text-5xl leading-tight sm:text-6xl md:text-7xl">
             {BRAND.name.toUpperCase()}
           </h1>
           <p className="mt-4 text-lg text-blush">{BRAND.roleLine}</p>
 
-          <ul className="mt-6 flex gap-5" aria-label="Follow Faith Abah on social media">
+          <ul
+            className="mt-6 flex gap-5"
+            aria-label="Follow Faith Abah on social media"
+          >
             {SOCIALS.map((s) => (
               <li key={s.label}>
                 <a
@@ -43,17 +56,7 @@ export default function Hero() {
             </a>
           </div>
         </div>
-
-        <div className="order-1 flex justify-center md:order-2">
-          <img
-            src="/hero-placeholder.svg"
-            alt="Faith Abah (Mc Fabs), Master of Ceremonies and Brand Host — cutout portrait"
-            className="h-auto w-full max-w-sm"
-            width="600"
-            height="800"
-          />
-        </div>
       </div>
     </section>
-  )
+  );
 }

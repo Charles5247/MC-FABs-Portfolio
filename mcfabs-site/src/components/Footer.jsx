@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
-import { NAV_LINKS, SOCIALS, BRAND, TICKETING_URL } from '../lib/constants'
+import { Link } from "react-router-dom";
+import { NAV_LINKS, SOCIALS, BRAND, TICKETING_URL } from "../lib/constants";
 
 export default function Footer() {
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-ink text-paper/80">
@@ -57,10 +57,17 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="mt-10 border-t border-white/10 pt-6 text-xs text-paper/50">
-          &copy; {year} {BRAND.name} ({BRAND.stageName}). All rights reserved.
-        </p>
+        <div className="mt-10 md:py-0 border-t border-white/20 grid md:items-center gap-50 md:grid-cols-2 md:px-25">
+          <p className="mb-0 pt-6 text-xs text-paper/50">
+            &copy; {year} {BRAND.name} ({BRAND.stageName}). | All rights
+            reserved.
+          </p>
+          <p className="mb-0 pt-6 text-xs text-paper/50">
+            Developed By |
+            <a href="https://caxietechnologies.com"> CAXiE Technologies Ltd</a>
+          </p>
+        </div>
       </div>
     </footer>
-  )
+  );
 }
