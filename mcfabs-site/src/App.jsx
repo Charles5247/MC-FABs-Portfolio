@@ -1,11 +1,11 @@
-import { Routes, Route } from 'react-router-dom'
-import Nav from './components/Nav'
-import Footer from './components/Footer'
-import Home from './pages/Home'
-import Masterclass from './pages/Masterclass'
-import Blog from './pages/Blog'
-import BlogPost from './pages/BlogPost'
-import NotFound from './pages/NotFound'
+import { Routes, Route } from "react-router-dom";
+import Nav from "./components/Nav";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Masterclass from "./pages/Masterclass";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -22,5 +22,5 @@ export default function App() {
       </div>
       <Footer />
     </div>
-  )
+  );
 }

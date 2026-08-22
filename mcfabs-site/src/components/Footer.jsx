@@ -5,11 +5,13 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-ink text-paper/80">
+    <footer className="bg-ink md:items-center  text-paper/80">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="grid gap-10 sm:grid-cols-3">
+        <div className="grid gap-20 sm:grid-cols-3">
           <div>
-            <p className="font-display text-xl text-paper">{BRAND.stageName}</p>
+            <p className="font-display text-xl text-paper">
+              {BRAND.name} | MC FABS
+            </p>
             <p className="mt-2 text-sm">{BRAND.roleLine}</p>
             <p className="mt-1 text-sm">{BRAND.location}</p>
           </div>
@@ -31,15 +33,15 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-marquee-pink"
                 >
-                  Masterclass Tickets (fabs-masterclass.onrender.com)
+                  Masterclass Tickets
                 </a>
               </li>
             </ul>
           </nav>
 
           <div>
-            <p className="eyebrow text-blush">Follow</p>
-            <ul className="mt-3 flex gap-4">
+            <p className="eyebrow text-blush">Follow Us On</p>
+            <ul className="mt-3 grid gap-4">
               {SOCIALS.map((s) => (
                 <li key={s.label}>
                   <a

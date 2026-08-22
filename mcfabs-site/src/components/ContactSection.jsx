@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { CONTACT } from '../lib/constants'
+import { useState } from "react";
+import { CONTACT } from "../lib/constants";
 
 /**
  * Contact/booking section. WhatsApp + email quick links, plus a simple
@@ -8,34 +8,38 @@ import { CONTACT } from '../lib/constants'
  * the message still reaches Faith's inbox via the visitor's own mail client.
  */
 export default function ContactSection() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState('idle') // idle | success | error
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | success | error
 
   const handleChange = (e) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
-  }
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      setStatus('error')
-      return
+      setStatus("error");
+      return;
     }
 
-    const subject = encodeURIComponent(`Booking inquiry from ${form.name}`)
-    const body = encodeURIComponent(`${form.message}\n\n— ${form.name} (${form.email})`)
-    window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`
-    setStatus('success')
-  }
+    const subject = encodeURIComponent(`Booking inquiry from ${form.name}`);
+    const body = encodeURIComponent(
+      `${form.message}\n\n— ${form.name} (${form.email})`,
+    );
+    window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
+    setStatus("success");
+  };
 
   return (
-    <section id="contact" className="bg-ink py-16 text-paper sm:py-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+    <section id="contact" className="bg-ink py-10 text-paper sm:py-15">
+      <div className="mx-70 max-w-3xl px-2 sm:px-4">
         <p className="eyebrow text-spark-gold">Get in Touch</p>
-        <h2 className="mt-3 font-display text-3xl sm:text-4xl">Book Faith for Your Next Event</h2>
+        <h2 className="mt-3 font-display text-3xl sm:text-4xl">
+          Book MC FABS for Your Next Event
+        </h2>
         <p className="mt-4 text-blush">
-          TODO: [Confirm whether rates are shared publicly — default is
+          TODO: [Confirm whether rates are shared publicly — defaulbt is
           &ldquo;request a quote&rdquo; until told otherwise.]
         </p>
 
@@ -90,7 +94,10 @@ export default function ContactSection() {
           </div>
 
           <div>
-            <label htmlFor="contact-message" className="eyebrow block text-blush">
+            <label
+              htmlFor="contact-message"
+              className="eyebrow block text-blush"
+            >
               Message
             </label>
             <textarea
@@ -113,17 +120,20 @@ export default function ContactSection() {
           </button>
 
           <div role="status" aria-live="polite">
-            {status === 'success' && (
+            {status === "success" && (
               <p className="text-blush">
-                Thanks! Your email app should now open with your message ready to send.
+                Thanks! Your email app should now open with your message ready
+                to send.
               </p>
             )}
-            {status === 'error' && (
-              <p className="text-marquee-pink">Please fill in your name, email, and message.</p>
+            {status === "error" && (
+              <p className="text-marquee-pink">
+                Please fill in your name, email, and message.
+              </p>
             )}
           </div>
         </form>
       </div>
     </section>
-  )
+  );
 }

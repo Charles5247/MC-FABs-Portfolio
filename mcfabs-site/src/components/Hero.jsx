@@ -3,7 +3,7 @@ import { BRAND, TICKETING_URL, SOCIALS } from "../lib/constants";
 export default function Hero() {
   return (
     <section id="home" className="bg-ink text-paper">
-      <div className="mx-auto grid max-w-6xl gap-25 px-4 py-16 sm:px-6 md:grid-cols-2 md:items-center md:py-24">
+      <div className="h-175 mx-auto grid max-w-6xl gap-25 px-4 py-16 sm:px-6 md:grid-cols-2 md:items-center md:py-24">
         <div className="order-1 flex justify-center md:order-1">
           <img
             src="\src\fabs.jpg"
