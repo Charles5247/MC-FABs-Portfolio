@@ -103,6 +103,7 @@ Detailed instructions to deploy both applications to **Vercel**, **Netlify**, or
 
 #### Option C: Render
 
+**Manual Setup:**
 1. Log into [Render](https://dashboard.render.com/) and select **New + → Static Site**.
 2. Connect your Git repository.
 3. Set the build parameters:
@@ -117,6 +118,8 @@ Detailed instructions to deploy both applications to **Vercel**, **Netlify**, or
    - **Source**: `/*`
    - **Destination**: `/index.html`
 6. Click **Create Static Site**.
+
+*(Tip: You can also use the included [`render.yaml`](render.yaml) Blueprint to provision both `mcfabs-site` and `mcfabs-admin` together via **New + → Blueprint**.)*
 
 ---
 
@@ -152,6 +155,7 @@ Detailed instructions to deploy both applications to **Vercel**, **Netlify**, or
 
 #### Option C: Render
 
+**Manual Setup:**
 1. In [Render](https://dashboard.render.com/), choose **New + → Static Site**.
 2. Configure the site:
    - **Name**: `mcfabs-admin`
@@ -168,6 +172,8 @@ Detailed instructions to deploy both applications to **Vercel**, **Netlify**, or
    - **Name**: `X-Robots-Tag`
    - **Value**: `noindex, nofollow`
 6. Click **Create Static Site**.
+
+*(Tip: You can also provision this service automatically alongside the main site using Render's Blueprint with the included [`render.yaml`](render.yaml).)*
 
 ---
 

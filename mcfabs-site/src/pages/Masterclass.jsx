@@ -1,5 +1,6 @@
 import Seo from '../components/Seo'
 import Gallery from '../components/Gallery'
+import VideoReels from '../components/VideoReels'
 import AnnouncementPopup from '../components/AnnouncementPopup'
 import { useAsync } from '../hooks/useAsync'
 import { fetchMasterclassEditions } from '../lib/api'
@@ -82,6 +83,13 @@ export default function Masterclass() {
         </section>
 
         <Gallery tag="masterclass" heading="Masterclass Moments" eyebrow="Past Editions" />
+
+        <VideoReels
+          type="masterclass"
+          heading="Masterclass in Motion"
+          eyebrow="Reels & Highlights"
+          description="Experience the coaching breakthroughs, microphone drills, and stage transformations from Masterclass 1.0."
+        />
 
         <section className="bg-plum py-16 text-paper sm:py-24" aria-labelledby="editions-heading">
           <div className="mx-auto max-w-4xl px-4 sm:px-6">

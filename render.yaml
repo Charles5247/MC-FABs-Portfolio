@@ -1,0 +1,64 @@
+services:
+  # -------------------------------------------------------
+  # Main Site (Public Portfolio)
+  # -------------------------------------------------------
+  - type: web
+    name: mcfabs-site
+    runtime: static
+    rootDir: mcfabs-site
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_SITE_URL
+        sync: false
+      - key: VITE_TICKETING_URL
+        sync: false
+      - key: VITE_BOOKING_EMAIL
+        sync: false
+      - key: VITE_WHATSAPP_NUMBER
+        sync: false
+      - key: VITE_INSTAGRAM_URL
+        sync: false
+      - key: VITE_X_URL
+        sync: false
+      - key: VITE_TIKTOK_URL
+        sync: false
+      - key: VITE_YOUTUBE_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # -------------------------------------------------------
+  # Admin Content Studio
+  # -------------------------------------------------------
+  - type: web
+    name: mcfabs-admin
+    runtime: static
+    rootDir: mcfabs-admin
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_PUBLIC_SITE_URL
+        sync: false
+    headers:
+      - path: /*
+        name: X-Robots-Tag
+        value: noindex, nofollow
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

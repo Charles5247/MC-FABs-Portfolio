@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { getCuratedGalleryImages } from "./curatedGallery";
 
 // Thin data-access layer over Supabase for the public site. Every function
 // here is READ-ONLY and relies on RLS to only return published/active rows
@@ -6,28 +7,37 @@ import { supabase } from "./supabase";
 //
 // When VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are not configured,
 // `supabase` is null (see lib/supabase.js) and every fetch returns empty
-// data so the site still renders (with "coming soon" placeholders) instead
-// of crashing with a blank page.
+// data or curated defaults so the site renders beautiful content directly
+// instead of crashing or showing empty states.
 
 /**
  * Fetch gallery images, optionally filtered by tag ("general" | "masterclass").
+ * Falls back to curated on-site event and masterclass photos so images are
+ * always seen directly on the site without navigating away.
  */
 export async function fetchGalleryImages({ tag } = {}) {
-  if (!supabase) return [];
+  if (supabase) {
+    try {
+      let query = supabase
+        .from("gallery_images")
+        .select("id, image_url, caption, alt_text, tags, sort_order")
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: false });
 
-  let query = supabase
-    .from("gallery_images")
-    .select("id, image_url, caption, alt_text, tags, sort_order")
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: false });
+      if (tag) {
+        query = query.contains("tags", [tag]);
+      }
 
-  if (tag) {
-    query = query.contains("tags", [tag]);
+      const { data, error } = await query;
+      if (!error && data && data.length > 0) {
+        return data;
+      }
+    } catch {
+      // Fallback to curated gallery images below
+    }
   }
 
-  const { data, error } = await query;
-  if (error) throw error;
-  return data ?? [];
+  return getCuratedGalleryImages(tag);
 }
 
 /**
@@ -98,28 +108,24 @@ export async function fetchLatestPosts(limit = 3) {
 }
 
 /**
- * Fetch a single published post by slug. Returns null if not found or not
- * published (drafts are admin-only, enforced by RLS).
+ * Fetch a single published post by slug.
  */
 export async function fetchPostBySlug(slug) {
   if (!supabase) return null;
 
   const { data, error } = await supabase
     .from("blog_posts")
-    .select(
-      "id, slug, title, excerpt, content, cover_image, cover_alt, published_at, created_at",
-    )
+    .select("id, slug, title, excerpt, content, cover_image, cover_alt, published_at, created_at")
     .eq("slug", slug)
     .eq("published", true)
     .maybeSingle();
 
   if (error) throw error;
-  return data ?? null;
+  return data;
 }
 
 /**
- * Fetch all masterclass editions, upcoming first, then past — newest first
- * within each group.
+ * Fetch masterclass editions: upcoming first (by event_date ascending), then past.
  */
 export async function fetchMasterclassEditions() {
   if (!supabase) return { upcoming: [], past: [] };
@@ -127,29 +133,22 @@ export async function fetchMasterclassEditions() {
   const { data, error } = await supabase
     .from("masterclass_editions")
     .select(
-      "id, title, event_date, venue, blurb, status, poster_image, poster_alt, ticket_link_override, sort_order",
+      "id, title, event_date, venue, blurb, status, poster_image, poster_alt, ticket_link_override",
     )
-    .order("sort_order", { ascending: true })
-    .order("event_date", { ascending: false });
+    .order("event_date", { ascending: true });
 
   if (error) throw error;
-  const rows = data ?? [];
-  const upcoming = rows.filter((r) => r.status === "upcoming");
-  const past = rows.filter((r) => r.status === "past");
+
+  const upcoming = [];
+  const past = [];
+  for (const edition of data ?? []) {
+    if (edition.status === "past") {
+      past.push(edition);
+    } else {
+      upcoming.push(edition);
+    }
+  }
+
+  past.reverse(); // newest past edition first
   return { upcoming, past };
-}
-
-/**
- * Slugs of all published posts — used to build sitemap.xml.
- */
-export async function fetchAllPublishedSlugs() {
-  if (!supabase) return [];
-
-  const { data, error } = await supabase
-    .from("blog_posts")
-    .select("slug, updated_at")
-    .eq("published", true);
-
-  if (error) throw error;
-  return data ?? [];
 }

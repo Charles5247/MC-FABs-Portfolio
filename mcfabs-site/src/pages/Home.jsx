@@ -6,6 +6,7 @@ import About from '../components/About'
 import RoleBlocksSection from '../components/RoleBlocksSection'
 import StatsBar from '../components/StatsBar'
 import Gallery from '../components/Gallery'
+import VideoReels from '../components/VideoReels'
 import MasterclassSpotlight from '../components/MasterclassSpotlight'
 import BlogTeaser from '../components/BlogTeaser'
 import Testimonials from '../components/Testimonials'
@@ -42,11 +43,18 @@ export default function Home() {
         <RoleBlocksSection />
         <StatsBar />
         <Gallery tag="general" heading="Moments On Stage" eyebrow="Gallery" />
+        <VideoReels
+          type="events"
+          heading="Fabs in Action"
+          eyebrow="Live Video Reels"
+          description="Watch Faith Abah bring stage energy, poise, and unforgettable hosting presence to live stages across Nigeria."
+        />
         <MasterclassSpotlight />
         <BlogTeaser />
         <Testimonials />
         <PressStrip />
-        <BookingFaq /><ContactSection />
+        <BookingFaq />
+        <ContactSection />
       </main>
     </>
   )
