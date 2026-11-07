@@ -1,31 +1,102 @@
-# Deploy the admin app to Vercel
+# Deploying the Admin Content Studio (`mcfabs-admin`)
 
-This is a **separate Vercel project**, not a route inside the public site.
+This guide covers deploying the private content management studio for Faith Abah (MC FABS) to **Vercel**, **Netlify**, or **Render**.
 
-1. Import the same Git repository again using Add New → Project.
-2. Give it a distinct name, for example mcfabs-admin.
-3. Set **Root Directory to mcfabs-admin**.
-4. Select Vite, Install Command `npm ci`, Build Command `npm run build`, Output Directory `dist`, and Node.js 24.x.
-5. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY from the same dedicated content project used by the public site.
-6. Add VITE_PUBLIC_SITE_URL with the main site's production HTTPS origin.
-7. Deploy. Optionally attach a separate admin subdomain in Settings → Domains.
-8. In Supabase Auth URL Configuration, use the admin origin as Site URL and allow the exact admin redirect URLs you use. Disable public sign-up and anonymous sign-in. Manually create only trusted admin accounts.
+> **Important:** This is a **separate project/site**, not a subroute inside the public portfolio site. Import the repository a second time and set the root directory to `mcfabs-admin`.
 
-Never expose a service-role key. The existing schema gives authenticated accounts CMS privileges, so this project must not contain ordinary customer accounts. The public ticketing platform must retain its separate database. Robots exclusions and the X-Robots-Tag header prevent indexing; access control comes from Supabase Auth and database/storage RLS.
+---
 
-## Verification
+## Required Environment Variables
 
-- Visit /dashboard in a signed-out browser: it must redirect to login.
-- Sign in with the manually provisioned admin account.
-- Check Overview totals, refresh them, and use each management link.
-- Create a draft journal post; verify it is absent from the public site.
-- Publish a test post and verify it appears. Confirm editing it preserves its original publication date.
-- Upload a photo and verify its public display and alt text.
-- Check announcement schedules and masterclass ticket links.
-- Open /dashboard/blog directly and refresh: the included SPA rewrite must keep the route working.
-- Test mobile navigation and the View public site link.
-- Log out, then confirm protected routes redirect again.
+| Variable | Description |
+| --- | --- |
+| `VITE_SUPABASE_URL` | Dedicated content project's Supabase URL |
+| `VITE_SUPABASE_ANON_KEY` | Public / anon API key (never use service-role key) |
+| `VITE_PUBLIC_SITE_URL` | Main public site's production origin (e.g. `https://mcfabs.com`) |
 
-Each Vercel project has its own variables, domains, deployment history, and rollback. A Git push can trigger both projects, but each builds independently from its configured folder. Roll back this project from its Deployments page without changing the public deployment. Database edits are not rolled back by Vercel.
+---
 
-Official references: [Vercel monorepos](https://vercel.com/docs/monorepos), [Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite).
+## Supabase Auth Configuration
+
+Before deploying:
+1. Under **Authentication → URL Configuration**:
+   - **Site URL**: Enter the admin production origin (e.g., `https://admin.mcfabs.com`).
+   - **Redirect URLs**: Add both `https://admin.mcfabs.com/**` and `http://localhost:5174/**`.
+2. Under **Authentication → Providers → Email**:
+   - Disable **Enable Signup** (public registration must be disabled).
+   - Disable anonymous sign-ins.
+3. Under **Authentication → Users**:
+   - Manually provision only trusted admin accounts. RLS grants full editing privileges to authenticated users in this dedicated project.
+
+---
+
+## 1. Deploying to Vercel
+
+1. Push your repository to Git.
+2. In [Vercel](https://vercel.com/dashboard), click **Add New... → Project**.
+3. Select the repository (imported as a separate project).
+4. Configure settings:
+   - **Project Name**: `mcfabs-admin`
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `mcfabs-admin`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm ci`
+   - **Node.js Version**: `20.x` or `24.x`
+5. Under **Environment Variables**, add:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_PUBLIC_SITE_URL`
+6. Click **Deploy**.
+   - SPA route rewrites and search engine blocking (`X-Robots-Tag: noindex, nofollow`) are pre-configured in [`vercel.json`](./vercel.json).
+7. Under **Settings → Domains**, assign your admin domain or subdomain (e.g., `admin.mcfabs.com`).
+
+---
+
+## 2. Deploying to Netlify
+
+1. In [Netlify](https://app.netlify.com/), click **Add new site → Import an existing project**.
+2. Select your repository.
+3. Configure build settings:
+   - **Base directory**: `mcfabs-admin`
+   - **Build command**: `npm run build`
+   - **Publish directory**: `mcfabs-admin/dist` (or `dist`)
+4. In **Site configuration → Environment variables**, add `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and `VITE_PUBLIC_SITE_URL`.
+5. Click **Deploy site**.
+   - SPA rewrites are provided by [`public/_redirects`](./public/_redirects).
+   - Search indexing prevention (`X-Robots-Tag: noindex, nofollow`) is configured via [`public/_headers`](./public/_headers).
+6. Configure custom domain in **Domain management** and update Supabase Site URL.
+
+---
+
+## 3. Deploying to Render
+
+1. In [Render](https://dashboard.render.com/), click **New + → Static Site**.
+2. Connect the Git repository.
+3. Configure site settings:
+   - **Name**: `mcfabs-admin`
+   - **Root Directory**: `mcfabs-admin`
+   - **Build Command**: `npm run build`
+   - **Publish Directory**: `dist`
+4. In the **Environment** tab:
+   - Add `NODE_VERSION`: `22` (or `24`)
+   - Add `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and `VITE_PUBLIC_SITE_URL`.
+5. In the **Redirects/Rewrites** tab, add the SPA rewrite rule:
+   - **Type**: `Rewrite`
+   - **Source**: `/*`
+   - **Destination**: `/index.html`
+6. In the **Headers** tab, prevent search engine indexing:
+   - **Path**: `/*`
+   - **Name**: `X-Robots-Tag`
+   - **Value**: `noindex, nofollow`
+7. Click **Create Static Site**.
+
+---
+
+## Post-Deployment Verification
+
+- Unauthenticated route check: Navigate to `/dashboard` directly while signed out; ensure redirect to `/login`.
+- Login: Authenticate with the manually created Supabase credentials.
+- Deep links & refreshes: Refresh the browser on `/dashboard/blog` to verify SPA rewrites work.
+- Content updates: Test creating and updating gallery items, journal posts, announcements, and masterclass details.
+- Header check: Confirm response headers include `X-Robots-Tag: noindex, nofollow`.
