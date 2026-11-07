@@ -47,6 +47,7 @@ export default function MasterclassEditionsManager() {
   const edit = (row) => { setEditingId(row.id); setForm({ ...empty, ...row, event_date: row.event_date || '' }) }
 
   const remove = async (id) => {
+    if (!window.confirm('Delete this item? This cannot be undone.')) return
     const { error } = await supabase.from('masterclass_editions').delete().eq('id', id)
     if (error) setStatus({ type: 'error', message: error.message })
     else { setStatus({ type: 'success', message: 'Edition deleted.' }); load() }
@@ -58,16 +59,16 @@ export default function MasterclassEditionsManager() {
       <StatusBanner status={status} />
 
       <form onSubmit={handleSubmit} className="mt-4 max-w-xl space-y-3 border border-ink/10 bg-white p-4">
-        <input placeholder="Title" required value={form.title}
+        <input aria-label="Title" placeholder="Title" required value={form.title}
           onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
         <input type="date" value={form.event_date}
           onChange={(e) => setForm((f) => ({ ...f, event_date: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
-        <input placeholder="Venue" value={form.venue}
+        <input aria-label="Venue" placeholder="Venue" value={form.venue}
           onChange={(e) => setForm((f) => ({ ...f, venue: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
-        <textarea placeholder="Blurb" value={form.blurb}
+        <textarea aria-label="Blurb" placeholder="Blurb" value={form.blurb}
           onChange={(e) => setForm((f) => ({ ...f, blurb: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
         <select value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
@@ -76,10 +77,10 @@ export default function MasterclassEditionsManager() {
           <option value="past">Past</option>
         </select>
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="block text-sm" />
-        <input placeholder="Poster alt text" value={form.poster_alt}
+        <input aria-label="Poster alt text" placeholder="Poster alt text" value={form.poster_alt}
           onChange={(e) => setForm((f) => ({ ...f, poster_alt: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
-        <input placeholder="Ticket link override (optional — defaults to fabs-masterclass.onrender.com)" value={form.ticket_link_override}
+        <input aria-label="Ticket link override (optional — defaults to fabs-masterclass.onrender.com)" placeholder="Ticket link override (optional — defaults to fabs-masterclass.onrender.com)" value={form.ticket_link_override}
           onChange={(e) => setForm((f) => ({ ...f, ticket_link_override: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
         <div className="flex gap-2">

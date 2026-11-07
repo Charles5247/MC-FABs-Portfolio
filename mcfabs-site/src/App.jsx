@@ -6,10 +6,12 @@ import Masterclass from "./pages/Masterclass";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
+import ScrollToRoute from "./components/ScrollToRoute";
 
 export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollToRoute />
       <Nav />
       <div className="flex-1">
         <Routes>

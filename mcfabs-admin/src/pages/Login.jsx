@@ -12,10 +12,13 @@ export default function Login() {
     e.preventDefault()
     setError('')
     setBusy(true)
-    const { error: signInError } = await signIn(email, password)
-    setBusy(false)
-    if (signInError) {
-      setError('Invalid email or password. Please try again.')
+    try {
+      const { error: signInError } = await signIn(email, password)
+      if (signInError) setError('Unable to sign in. Check your email and password and try again.')
+    } catch {
+      setError('Unable to connect. Check your connection and try again.')
+    } finally {
+      setBusy(false)
     }
   }
 
@@ -25,14 +28,14 @@ export default function Login() {
         <p className="eyebrow text-center text-spark-gold">Faith Abah — Admin</p>
         <h1 className="mt-2 text-center font-display text-3xl text-paper">MC FABS Dashboard</h1>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-4" noValidate>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
             <label htmlFor="email" className="eyebrow block text-blush">
               Email
             </label>
             <input
               id="email"
-              type="email"
+              type="email" autoComplete="username"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -45,7 +48,7 @@ export default function Login() {
             </label>
             <input
               id="password"
-              type="password"
+              type="password" autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -69,7 +72,7 @@ export default function Login() {
         </form>
 
         <p className="mt-6 text-center text-xs text-paper/40">
-          No public sign-up. This account is created manually in Supabase Auth.
+          Private workspace for the MC FABS team.
         </p>
       </div>
     </div>

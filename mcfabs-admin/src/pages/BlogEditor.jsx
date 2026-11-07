@@ -38,7 +38,7 @@ export default function BlogEditor() {
       }
       const payload = {
         ...form, cover_image,
-        published_at: form.published ? new Date().toISOString() : null,
+        published_at: form.published ? (form.published_at || new Date().toISOString()) : null,
       }
       if (editingId) {
         const { error } = await supabase.from('blog_posts').update(payload).eq('id', editingId)
@@ -62,6 +62,7 @@ export default function BlogEditor() {
   }
 
   const remove = async (id) => {
+    if (!window.confirm('Delete this item? This cannot be undone.')) return
     const { error } = await supabase.from('blog_posts').delete().eq('id', id)
     if (error) setStatus({ type: 'error', message: error.message })
     else { setStatus({ type: 'success', message: 'Post deleted.' }); load() }
@@ -74,20 +75,20 @@ export default function BlogEditor() {
 
       <form onSubmit={handleSubmit} className="mt-4 grid gap-6 lg:grid-cols-2">
         <div className="space-y-3 border border-ink/10 bg-white p-4">
-          <input placeholder="Title" required value={form.title}
+          <input aria-label="Title" placeholder="Title" required value={form.title}
             onChange={(e) => handleTitleChange(e.target.value)}
             className="w-full border border-ink/20 px-3 py-2" />
-          <input placeholder="Slug" required value={form.slug}
+          <input aria-label="Slug" placeholder="Slug" required value={form.slug}
             onChange={(e) => { setSlugTouched(true); setForm((f) => ({ ...f, slug: e.target.value })) }}
             className="w-full border border-ink/20 px-3 py-2" />
-          <textarea placeholder="Excerpt" value={form.excerpt}
+          <textarea aria-label="Excerpt" placeholder="Excerpt" value={form.excerpt}
             onChange={(e) => setForm((f) => ({ ...f, excerpt: e.target.value }))}
             className="w-full border border-ink/20 px-3 py-2" />
           <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="block text-sm" />
-          <input placeholder="Cover image alt text" value={form.cover_alt}
+          <input aria-label="Cover image alt text" placeholder="Cover image alt text" value={form.cover_alt}
             onChange={(e) => setForm((f) => ({ ...f, cover_alt: e.target.value }))}
             className="w-full border border-ink/20 px-3 py-2" />
-          <textarea placeholder="Content (Markdown)" rows={12} value={form.content}
+          <textarea aria-label="Content (Markdown)" placeholder="Content (Markdown)" rows={12} value={form.content}
             onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
             className="w-full border border-ink/20 px-3 py-2 font-mono text-sm" />
           <label className="flex items-center gap-2 text-sm">

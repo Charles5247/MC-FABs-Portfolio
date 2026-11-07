@@ -1,6 +1,7 @@
 import { TESTIMONIALS } from '../lib/constants'
 
 export default function Testimonials() {
+  if (!TESTIMONIALS.length) return null
   return (
     <section className="bg-plum py-16 sm:py-24" aria-labelledby="testimonials-heading">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">

@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="bg-ink md:items-center  text-paper/80">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="grid gap-20 sm:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-3">
           <div>
             <p className="font-display text-xl text-paper">
               {BRAND.name} | MC FABS
@@ -59,7 +59,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 md:py-0 border-t border-white/20 grid md:items-center gap-50 md:grid-cols-2 md:px-25">
+        <div className="mt-10 md:py-0 border-t border-white/20 grid md:items-center gap-4 md:grid-cols-2">
           <p className="mb-0 pt-6 text-xs text-paper/50">
             &copy; {year} {BRAND.name} ({BRAND.stageName}). | All rights
             reserved.

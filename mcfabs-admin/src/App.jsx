@@ -7,6 +7,7 @@ import GalleryManager from './pages/GalleryManager'
 import AnnouncementsManager from './pages/AnnouncementsManager'
 import BlogEditor from './pages/BlogEditor'
 import MasterclassEditionsManager from './pages/MasterclassEditionsManager'
+import Overview from './pages/Overview'
 
 export default function App() {
   return (
@@ -28,7 +29,7 @@ export default function App() {
             </RequireAuth>
           }
         >
-          <Route index element={<Navigate to="gallery" replace />} />
+          <Route index element={<Overview />} />
           <Route path="gallery" element={<GalleryManager />} />
           <Route path="announcements" element={<AnnouncementsManager />} />
           <Route path="blog" element={<BlogEditor />} />

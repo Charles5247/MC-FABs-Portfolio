@@ -1,3 +1,4 @@
+import BookingFaq from '../components/BookingFaq'
 import Seo from '../components/Seo'
 import Hero from '../components/Hero'
 import Marquee from '../components/Marquee'
@@ -21,7 +22,7 @@ export default function Home() {
     alternateName: BRAND.stageName,
     jobTitle: 'Master of Ceremonies, Brand Host & Media Personality',
     url: SITE_URL,
-    sameAs: [CONTACT.instagram, CONTACT.x, CONTACT.tiktok, CONTACT.youtube],
+    sameAs: [CONTACT.instagram, CONTACT.x, CONTACT.tiktok, CONTACT.youtube].filter(Boolean),
   }
 
   return (
@@ -45,7 +46,7 @@ export default function Home() {
         <BlogTeaser />
         <Testimonials />
         <PressStrip />
-        <ContactSection />
+        <BookingFaq /><ContactSection />
       </main>
     </>
   )

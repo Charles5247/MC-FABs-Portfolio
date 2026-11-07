@@ -11,7 +11,7 @@ function EditionCard({ edition }) {
   const dateLabel = formatDate(edition.event_date)
 
   return (
-    <article className="grid gap-4 border border-ink/10 bg-white/60 p-5 sm:grid-cols-[160px_1fr]">
+    <article className="grid gap-4 border border-ink/10 bg-paper p-5 sm:grid-cols-[160px_1fr]">
       {edition.poster_image ? (
         <img
           src={edition.poster_image}
@@ -63,11 +63,11 @@ export default function Masterclass() {
             <h1 className="mt-3 font-display text-4xl sm:text-5xl">{BRAND.tagline}</h1>
             <div className="mt-6 space-y-4 text-left text-blush sm:text-center">
               <p>
-                TODO: [Paragraph 1 — what the Masterclass is: format, duration, what's covered.]
+                Explore the art of hosting with Faith Abah and the MC FABS Exclusive Masterclass.
               </p>
-              <p>TODO: [Paragraph 2 — who it's for: aspiring MCs, hosts, speakers, brand voices.]</p>
+              <p>For aspiring MCs, hosts, speakers, and brand voices ready to develop their stage presence.</p>
               <p>
-                TODO: [Paragraph 3 — what attendees walk away with; tie back to the tagline.]
+                Browse published editions below for dates, venues, and event details before choosing your ticket.
               </p>
             </div>
             <a
@@ -109,8 +109,7 @@ export default function Masterclass() {
               <div className="mt-8 space-y-6">
                 {data.upcoming.length === 0 && data.past.length === 0 && (
                   <p className="text-blush">
-                    TODO: [No editions added yet — upcoming and past masterclass editions will
-                    appear here once entered in the admin dashboard.]
+                    New edition details will be announced here. Check the ticketing platform for current availability.
                   </p>
                 )}
                 {data.upcoming.map((edition) => (

@@ -10,8 +10,7 @@ export default function MasterclassSpotlight() {
           {BRAND.tagline}
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-ink/80">
-          TODO: [One-sentence teaser about the Masterclass — who it's for and what they'll walk
-          away with.]
+          Explore your voice, build your confidence, and take the next step in your journey as an MC, host, or speaker.
         </p>
         <Link
           to="/masterclass"

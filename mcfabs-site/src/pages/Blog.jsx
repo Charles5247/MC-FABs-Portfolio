@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import Seo from '../components/Seo'
 import { useAsync } from '../hooks/useAsync'
@@ -9,7 +8,7 @@ const PAGE_SIZE = 9
 
 export default function Blog() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10))
+  const page = Math.max(1, (parseInt(searchParams.get('page') || '1', 10) || 1))
 
   const { data, loading, error } = useAsync(
     () => fetchPublishedPosts({ page, pageSize: PAGE_SIZE }),
@@ -51,7 +50,7 @@ export default function Blog() {
 
           {!loading && !error && data && data.posts.length === 0 && (
             <p className="mt-10 text-ink/60">
-              TODO: [No posts published yet — check back soon for Faith&apos;s first post.]
+              New stories are on the way. Check back for insights on hosting, voice, and stage presence.
             </p>
           )}
 

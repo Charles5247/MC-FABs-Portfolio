@@ -1,6 +1,7 @@
 import { STATS } from '../lib/constants'
 
 export default function StatsBar() {
+  if (!STATS.length) return null
   return (
     <section className="bg-ink py-12" aria-label="Faith Abah in numbers">
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 px-4 text-center sm:grid-cols-3 sm:px-6">

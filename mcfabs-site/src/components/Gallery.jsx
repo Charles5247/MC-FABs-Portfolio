@@ -65,7 +65,7 @@ export default function Gallery({ tag, heading = 'Gallery', eyebrow = 'In the Ro
 
         {!loading && !error && images && images.length === 0 && (
           <p className="mt-8 text-ink/60">
-            TODO: [Gallery photos coming soon — upload images from the admin dashboard.]
+            A closer look at the moments that matter. Event photography is coming soon.
           </p>
         )}
 

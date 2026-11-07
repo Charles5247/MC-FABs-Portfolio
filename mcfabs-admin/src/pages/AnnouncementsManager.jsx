@@ -58,6 +58,7 @@ export default function AnnouncementsManager() {
   }
 
   const remove = async (id) => {
+    if (!window.confirm('Delete this item? This cannot be undone.')) return
     const { error } = await supabase.from('announcements').delete().eq('id', id)
     if (error) setStatus({ type: 'error', message: error.message })
     else { setStatus({ type: 'success', message: 'Announcement deleted.' }); load() }
@@ -69,19 +70,19 @@ export default function AnnouncementsManager() {
       <StatusBanner status={status} />
 
       <form onSubmit={handleSubmit} className="mt-4 max-w-xl space-y-3 border border-ink/10 bg-white p-4">
-        <input placeholder="Internal name (admin-only)" required value={form.internal_name}
+        <input aria-label="Internal name (admin-only)" placeholder="Internal name (admin-only)" required value={form.internal_name}
           onChange={(e) => setForm((f) => ({ ...f, internal_name: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
-        <input placeholder="Public title" value={form.title}
+        <input aria-label="Public title" placeholder="Public title" value={form.title}
           onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
-        <textarea placeholder="Message" value={form.message}
+        <textarea aria-label="Message" placeholder="Message" value={form.message}
           onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
-        <input placeholder="Link URL" value={form.link_url}
+        <input aria-label="Link URL" placeholder="Link URL" value={form.link_url}
           onChange={(e) => setForm((f) => ({ ...f, link_url: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
-        <input placeholder="Button label" value={form.button_label}
+        <input aria-label="Button label" placeholder="Button label" value={form.button_label}
           onChange={(e) => setForm((f) => ({ ...f, button_label: e.target.value }))}
           className="w-full border border-ink/20 px-3 py-2" />
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)}

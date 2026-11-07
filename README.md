@@ -1,117 +1,53 @@
-# MC FABS Web Presence — Public Site + Admin CMS
+# MC FABS — public site and content studio
 
-Two separate Vite/React/Tailwind/Supabase apps for Faith Abah ("Mc Fabs"):
+Two independent React / Vite applications for Faith Abah (MC FABS), sharing a dedicated Supabase content backend.
 
-| App | Folder | Deploy target | Purpose |
-|---|---|---|---|
-| Public site | `mcfabs-site/` | `mcfabs.onrender.com` | Home, Masterclass, Blog (public, read-only) |
-| Admin CMS | `mcfabs-admin/` | `mcfabs-admin.onrender.com` | Faith's private content dashboard |
+| App | Folder | Vercel project root | Guide |
+| --- | --- | --- | --- |
+| Public portfolio | mcfabs-site | mcfabs-site | [Main site deployment](mcfabs-site/DEPLOYMENT.md) |
+| Private content studio | mcfabs-admin | mcfabs-admin | [Admin deployment](mcfabs-admin/DEPLOYMENT.md) |
 
-Both use the **same new, dedicated Supabase project** (see `supabase/migration.sql`).
-This project is completely separate from the existing ticketing platform
-(`fabs-masterclass.onrender.com`) — no shared tables, credentials, or DB
-connection. The only link is a plain hyperlink from the public site out to
-the ticketing platform.
+**Create two Vercel projects by importing this repository twice.** Each builds its own dist folder, has its own domain and environment variables, and can be deployed or rolled back independently. Do not deploy the repository root or combine both apps into one deployment.
 
-## 1. Supabase setup (one project, shared by both apps)
+## Local development
 
-1. Create a new Supabase project (separate from the ticketing platform's project).
-2. SQL Editor → paste and run `supabase/migration.sql` once. This creates
-   `gallery_images`, `announcements`, `blog_posts`, `masterclass_editions`,
-   their RLS policies, and storage policies.
-3. Storage → New bucket → name it `media`, **Public bucket = ON**.
-4. Authentication → Users → **Add user manually** (email/password) — this is
-   Faith's single admin account. Do not enable public sign-ups.
-5. Authentication → URL Configuration → add both
-   `https://mcfabs.onrender.com` and `https://mcfabs-admin.onrender.com` to
-   Site URL / Redirect URLs so Supabase Auth and CORS work for both origins.
-6. Project Settings → API → copy the **Project URL** and **anon/public key**
-   — you'll use the same two values in both apps' `.env` files. Never use
-   the service-role key in either app.
+Use Node.js 24.x. In each app folder, copy .env.example to .env, fill in the values, then run:
 
-## 2. Run locally
-
-Each app is independent — install and run separately:
-
-```bash
-cd mcfabs-site
-cp .env.example .env   # fill in your Supabase URL/anon key
-npm install
-npm run dev             # http://localhost:5173
-
-cd ../mcfabs-admin
-cp .env.example .env   # same Supabase URL/anon key
-npm install
-npm run dev             # http://localhost:5174
+```sh
+npm ci
+npm run dev
 ```
 
-## 3. Build & deploy to Render (two separate services)
+Public site: http://localhost:5173. Admin: http://localhost:5174.
+On Windows PowerShell with script execution disabled, use npm.cmd instead of npm.
 
-For **each** app, create a separate Render **Static Site** (or Web Service
-serving the `dist/` output):
+Build each app with `npm run build`; lint with `npm run lint`.
 
-- Build command: `npm install && npm run build`
-- Publish directory: `dist`
-- Environment variables: set `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
-  (both apps), plus `VITE_SITE_URL` / `VITE_TICKETING_URL` (site) or
-  `VITE_PUBLIC_SITE_URL` (admin) — see each app's `.env.example`.
-- `mcfabs-site` → deploy as `mcfabs.onrender.com`
-- `mcfabs-admin` → deploy as `mcfabs-admin.onrender.com`
+## Dedicated Supabase backend
 
-Since this is a client-side SPA (React Router), configure Render's rewrite
-rule `/*  →  /index.html` (200) for both services so deep links work.
+1. Use a dedicated project for these two applications, separate from the ticketing platform.
+2. For a new database only, run supabase/migration.sql once through the SQL editor.
+3. Create a public Storage bucket named media.
+4. Disable public sign-up and anonymous sign-ins. Create the trusted admin user manually in Authentication → Users. The existing RLS policies grant CMS writes to authenticated users: all accounts in this project must be trusted administrators.
+5. Set the admin production origin as Supabase Auth Site URL and add the exact redirect URLs needed for admin authentication.
+6. Set the same Supabase URL and public/anon key in both apps. Never expose a service-role key in either application.
 
-## 4. Where to plug in real content
+The external ticketing platform remains a plain outbound link. Its users, payments, database, and credentials are separate.
 
-- **Bio, stats, testimonials, roles, socials, contact info**: all in
-  `mcfabs-site/src/lib/constants.js`, each marked with `TODO:` comments.
-- **Gallery photos, blog posts, popups, masterclass editions**: managed
-  entirely from the admin app once deployed and logged in — no code changes
-  needed.
-- **Hero image / favicon / default OG image**: placeholder flat-design
-  assets live in `mcfabs-site/public/` (`hero-placeholder.svg`,
-  `favicon*.png/.ico`, `og-default.jpg`). Replace with real photography when
-  available.
+## Client enquiries and content
 
-## 5. Sitemap maintenance
+- Public site: responsive portrait-led home page, service cards, masterclass, journal, gallery, booking FAQs, and an event brief form.
+- The form collects service, name, email, event date, location, budget, and event details. It prepares a message for email or WhatsApp. The visitor must send the message in that app; the website does not save leads or automatically send email.
+- Configure VITE_BOOKING_EMAIL and/or VITE_WHATSAPP_NUMBER before launch. With neither set, visitors can only prepare a copyable brief. No enquiry is reported as sent.
+- Only configured social links are shown. Unverified statistics, testimonials, and logos remain hidden.
+- Static brand and service copy lives in mcfabs-site/src/lib/constants.js.
+- Admin manages gallery images, journal drafts/publications, announcements, and masterclass editions. Overview shows database content totals and quick management links.
+- Deletion prompts protect against accidental removal. Editing published journal posts retains their original publication date.
 
-`mcfabs-site/public/sitemap.xml` ships with the static routes only. Blog
-post URLs are dynamic (stored in Supabase). After publishing new posts, run:
+## Production checklist
 
-```bash
-cd mcfabs-site
-node scripts/generate-sitemap.js
-```
+Follow both deployment guides, including environment variables, separate root directories, auth setup, and deep-link checks. Supply verified contacts, event details, and approved brand content. Regenerate the sitemap for the final public domain after publishing blog URLs, and update robots.txt.
 
-This regenerates `public/sitemap.xml` with every published post included.
-Commit and redeploy afterward. (See the comment in `sitemap.xml` itself.)
+Both apps include Vercel SPA rewrites. The admin also sends a noindex header; authentication and RLS provide actual access control.
 
-## 6. Keeping design tokens in sync
-
-`shared/tokens.css` is the source of truth for brand colors/fonts. It is
-duplicated at `mcfabs-site/src/styles/tokens.css` and
-`mcfabs-admin/src/styles/tokens.css` because these are two independent Vite
-projects with no shared build tooling. If you change a token, copy
-`shared/tokens.css` into both locations manually.
-
-## 7. Project structure
-
-```
-mcfabs-site/    Public site — Home, Masterclass, Blog (anon key, read-only)
-mcfabs-admin/   Admin dashboard — Gallery/Announcements/Blog/Masterclass CMS
-supabase/       migration.sql — shared DB schema + RLS, run once
-shared/         tokens.css — canonical design tokens (duplicated into both apps)
-```
-
-## Notes on scope
-
-- The admin app's nav/layout (`DashboardLayout.jsx`) is built fresh and does
-  **not** import or copy the public site's `Nav`/`Footer` components — they
-  are separate repos, separate component trees, by design.
-- The admin app is excluded from SEO: `robots.txt` disallow-all + a
-  `noindex, nofollow` meta tag in `index.html`.
-- The announcement popup dismissal uses `sessionStorage` (not
-  `localStorage`) intentionally — see the comment in
-  `mcfabs-site/src/components/AnnouncementPopup.jsx`.
-- Masterclass edition data on the public site is entered manually in the
-  admin app; it is never synced automatically from the ticketing platform.
+No new database schema is needed for this redesign. No production deployment or live database mutation is performed by the local changes.

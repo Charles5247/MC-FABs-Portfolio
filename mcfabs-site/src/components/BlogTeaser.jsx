@@ -38,8 +38,7 @@ export default function BlogTeaser() {
 
         {!loading && !error && posts && posts.length === 0 && (
           <p className="mt-8 text-ink/60">
-            TODO: [No posts published yet — the first post will appear here once published from
-            the admin dashboard.]
+            Stories from the stage and ideas for your next occasion. New articles are on the way.
           </p>
         )}
 

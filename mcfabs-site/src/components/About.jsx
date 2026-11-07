@@ -1,3 +1,4 @@
+import portrait from '../Fabs-sit.jpg'
 import { ABOUT_PARAGRAPHS } from "../lib/constants";
 
 export default function About() {
@@ -8,7 +9,7 @@ export default function About() {
     >
       <div className="order-1 flex justify-center md:order-1">
         <img
-          src="\src\Fabs-sit.jpg"
+          src={portrait} loading="lazy"
           alt="Faith Abah (Mc Fabs), Master of Ceremonies and Brand Host — cutout portrait"
           className="h-auto w-full max-w-sm rounded-lg"
           width="600"

@@ -65,6 +65,7 @@ export default function GalleryManager() {
   }
 
   const handleDelete = async (id) => {
+    if (!window.confirm('Remove this image from the gallery? This cannot be undone.')) return
     const { error } = await supabase.from('gallery_images').delete().eq('id', id)
     if (error) setStatus({ type: 'error', message: error.message })
     else {
